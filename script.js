@@ -1,6 +1,23 @@
 const SCENE = document.querySelector('a-scene');
-let box, random;
+const CAMERA = document.querySelector('[camera]');
+let box, random, campossplit;
 let y = -1;
+let speed = 1;
+let modObj = {
+	"scene": SCENE,
+	"camera": CAMERA
+}
+
+function readfile(filename) {
+	var rawFile = new XMLHttpRequest();
+  rawFile.open("GET", filename, true);
+  rawFile.onreadystatechange = function() {
+    if (rawFile.readyState === 4) {
+      var allText = rawFile.responseText;
+    }
+  }
+  rawFile.send();
+}
 
 function loadChunk() {
 	for (var x = 0; x < 16; x++) {
@@ -31,5 +48,18 @@ function loadChunk() {
 	}
 }
 
-loadChunk()
+function cameraControls() {
+	document.addEventListener("keypress", (e)=>{
+		if (e.code == "Space") {
+			CAMERA.getAttribute('position').y += .55 * speed;
+		}
+	})
+	document.addEventListener("keydown", (e)=>{
+		if (e.key == "Shift") {
+			CAMERA.getAttribute('position').y -= .55 * speed;
+		}
+	})
+}
 
+loadChunk()
+cameraControls()
